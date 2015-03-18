@@ -32,13 +32,13 @@ define(function (require, exports, module) {
         Function to paste text
     */
     function pasteToEditor() {
-        document.execCommand('paste')
+        document.execCommand('paste');
     }
     /* 
         Function to cut text
     */
     function cutToClipboard() {
-        document.execCommand('cut')
+        document.execCommand('cut');
     }
     
     /*
