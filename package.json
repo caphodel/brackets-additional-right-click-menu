@@ -1,0 +1,12 @@
+{
+    "name": "deddy.runscript",
+    "title": "Run Script",
+    "description": "An extension to run selected text as js.",
+    "homepage": "",
+    "version": "0.1.0",
+    "author": "Deddy Lasmono Putro <caphodel@gmail.com>",
+    "license": "MIT",
+    "engines": {
+        "brackets": ">=0.20.0"
+    }
+}
