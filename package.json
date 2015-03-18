@@ -1,8 +1,8 @@
 {
-    "name": "deddy.runscript",
-    "title": "Run Script",
-    "description": "An extension to run selected text as js.",
-    "homepage": "",
+    "name": "deddy.additional-right-click-menu",
+    "title": "Brackets Additional Right Click Menu",
+    "description": "A Brackets extension that add additional functionality to Brackets editor, like cut, copy, paste.",
+    "homepage": "https://github.com/caphodel/brackets-additional-right-click-menu",
     "version": "0.1.0",
     "author": "Deddy Lasmono Putro <caphodel@gmail.com>",
     "license": "MIT",
