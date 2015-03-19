@@ -143,7 +143,7 @@ define(function (require, exports, module) {
     CommandManager.register(RIGHT_CLICK_MENU_PASTE_NAME, RIGHT_CLICK_MENU_PASTE_COMMAND_ID, pasteToEditor);
     CommandManager.register(RIGHT_CLICK_MENU_UPPERCASE_NAME, RIGHT_CLICK_MENU_UPPERCASE_COMMAND_ID, uppercase);
     CommandManager.register(RIGHT_CLICK_MENU_LOWERCASE_NAME, RIGHT_CLICK_MENU_LOWERCASE_COMMAND_ID, lowercase);
-    CommandManager.register(RIGHT_CLICK_MENU_SELECTALL_NAME, RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID, lowercase);
+    CommandManager.register(RIGHT_CLICK_MENU_SELECTALL_NAME, RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID, selectall);
 
     
     /*
