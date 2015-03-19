@@ -9,7 +9,8 @@ define(function (require, exports, module) {
         // This will let us add menus items
         Menus          = brackets.getModule("command/Menus"),
         EditorManager = brackets.getModule("editor/EditorManager"),
-        DocumentManager = brackets.getModule("document/DocumentManager");
+        DocumentManager = brackets.getModule("document/DocumentManager"),
+        Commands = brackets.getModule("command/Commands");
 
 
     /*
@@ -26,7 +27,11 @@ define(function (require, exports, module) {
         RIGHT_CLICK_MENU_LOWERCASE_NAME   = "lowercase",
         RIGHT_CLICK_MENU_LOWERCASE_COMMAND_ID  = "rightclickmenu.lowercase",
         RIGHT_CLICK_MENU_SELECTALL_NAME   = "Select all",
-        RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID  = "rightclickmenu.selectall";
+        RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID  = "rightclickmenu.selectall",
+        RIGHT_CLICK_MENU_BLOCKCOMMENT_NAME   = "Toggle Block Comment",
+        RIGHT_CLICK_MENU_BLOCKCOMMENT_COMMAND_ID  = "rightclickmenu.blockComment",
+        RIGHT_CLICK_MENU_LINECOMMENT_NAME   = "Toggle Line Comment",
+        RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID  = "rightclickmenu.lineComment";
 
     $('#editor-holder').mousedown(function(event) {
         var el = $(event.target)
@@ -137,6 +142,14 @@ define(function (require, exports, module) {
         currentDoc.replaceRange(selectedText.toLowerCase(), pos.start, pos.end);
     }
 
+    function blockComment(){
+        CommandManager.execute(Commands.EDIT_BLOCK_COMMENT);
+    }
+
+    function lineComment(){
+        CommandManager.execute(Commands.EDIT_LINE_COMMENT);
+    }
+
     /*
         Register command for menu action
     */
@@ -146,6 +159,8 @@ define(function (require, exports, module) {
     CommandManager.register(RIGHT_CLICK_MENU_UPPERCASE_NAME, RIGHT_CLICK_MENU_UPPERCASE_COMMAND_ID, uppercase);
     CommandManager.register(RIGHT_CLICK_MENU_LOWERCASE_NAME, RIGHT_CLICK_MENU_LOWERCASE_COMMAND_ID, lowercase);
     CommandManager.register(RIGHT_CLICK_MENU_SELECTALL_NAME, RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID, selectall);
+    CommandManager.register(RIGHT_CLICK_MENU_BLOCKCOMMENT_NAME, RIGHT_CLICK_MENU_BLOCKCOMMENT_COMMAND_ID, blockComment);
+    CommandManager.register(RIGHT_CLICK_MENU_LINECOMMENT_NAME, RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID, lineComment);
 
 
     /*
@@ -159,5 +174,8 @@ define(function (require, exports, module) {
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuDivider();
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_UPPERCASE_COMMAND_ID);
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_LOWERCASE_COMMAND_ID);
+    Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuDivider();
+    Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_BLOCKCOMMENT_COMMAND_ID);
+    Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID);
 
 });

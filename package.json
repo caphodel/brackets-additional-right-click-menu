@@ -1,9 +1,9 @@
 {
     "name": "deddy.additional-right-click-menu",
     "title": "Brackets Additional Right Click Menu",
-    "description": "A Brackets extension that add additional functionality to Brackets editor right menu, like cut, copy, paste. Works on windows 7 too!!! Now support select all, UPPERCASE and lowercase, and some menu items will be disabled if a text is not selected.",
+    "description": "A Brackets extension that add additional functionality to Brackets editor right menu, like cut, copy, paste. Works on windows 7 too!!! Now support select all, UPPERCASE and lowercase and some functionality from edit menu. Now ome menu items will be disabled if no text selected.",
     "homepage": "https://github.com/caphodel/brackets-additional-right-click-menu",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "author": "Deddy Lasmono Putro <caphodel@gmail.com>",
     "license": "MIT",
     "engines": {
