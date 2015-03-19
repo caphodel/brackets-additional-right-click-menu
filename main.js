@@ -132,7 +132,7 @@ define(function (require, exports, module) {
     function lowercase() {
         var editor = EditorManager.getCurrentFullEditor(),
             selectedText = editor.getSelectedText(),
-            pos = editor.getCursorPos(),
+            pos = editor.getSelection(),
             currentDoc = DocumentManager.getCurrentDocument();
         currentDoc.replaceRange(selectedText.toLowerCase(), pos.start, pos.end);
     }
