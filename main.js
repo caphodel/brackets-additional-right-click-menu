@@ -6,27 +6,27 @@ define(function (require, exports, module) {
 
     // The CommandManager registers command IDs with functions
     var CommandManager = brackets.getModule("command/CommandManager"),
-    // This will let us add menus items
+        // This will let us add menus items
         Menus          = brackets.getModule("command/Menus"),
         EditorManager = brackets.getModule("editor/EditorManager"),
         DocumentManager = brackets.getModule("document/DocumentManager");
-    
-    
+
+
     /*
         Some constants used by Additional right click menu       
     */
     var RIGHT_CLICK_MENU_COPY_NAME   = "Copy",
-    RIGHT_CLICK_MENU_COPY_COMMAND_ID  = "rightclickmenu.copy",
-    RIGHT_CLICK_MENU_PASTE_NAME   = "Paste",
-    RIGHT_CLICK_MENU_PASTE_COMMAND_ID  = "rightclickmenu.paste",
-    RIGHT_CLICK_MENU_CUT_NAME   = "Cut",
-    RIGHT_CLICK_MENU_CUT_COMMAND_ID  = "rightclickmenu.cut",
-    RIGHT_CLICK_MENU_UPPERCASE_NAME   = "UPPERCASE",
-    RIGHT_CLICK_MENU_UPPERCASE_COMMAND_ID  = "rightclickmenu.uppercase",
-    RIGHT_CLICK_MENU_LOWERCASE_NAME   = "LOWERCASE",
-    RIGHT_CLICK_MENU_LOWERCASE_COMMAND_ID  = "rightclickmenu.lowercase",
-    RIGHT_CLICK_MENU_SELECTALL_NAME   = "Select all",
-    RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID  = "rightclickmenu.selectall";
+        RIGHT_CLICK_MENU_COPY_COMMAND_ID  = "rightclickmenu.copy",
+        RIGHT_CLICK_MENU_PASTE_NAME   = "Paste",
+        RIGHT_CLICK_MENU_PASTE_COMMAND_ID  = "rightclickmenu.paste",
+        RIGHT_CLICK_MENU_CUT_NAME   = "Cut",
+        RIGHT_CLICK_MENU_CUT_COMMAND_ID  = "rightclickmenu.cut",
+        RIGHT_CLICK_MENU_UPPERCASE_NAME   = "UPPERCASE",
+        RIGHT_CLICK_MENU_UPPERCASE_COMMAND_ID  = "rightclickmenu.uppercase",
+        RIGHT_CLICK_MENU_LOWERCASE_NAME   = "lowercase",
+        RIGHT_CLICK_MENU_LOWERCASE_COMMAND_ID  = "rightclickmenu.lowercase",
+        RIGHT_CLICK_MENU_SELECTALL_NAME   = "Select all",
+        RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID  = "rightclickmenu.selectall";
 
     $('#editor-holder').mousedown(function(event) {
         var el = $(event.target)
@@ -91,7 +91,7 @@ define(function (require, exports, module) {
         }
     });
 
-    
+
     /* 
         Function to copy text
     */
@@ -122,9 +122,9 @@ define(function (require, exports, module) {
     function uppercase() {
         var editor = EditorManager.getCurrentFullEditor(),
             selectedText = editor.getSelectedText(),
-            pos = editor.getCursorPos(),
+            pos = editor.getSelection(),
             currentDoc = DocumentManager.getCurrentDocument();
-        currentDoc.replaceRange(selectedText.toUpperCase(), pos, (pos.ch += selectedText.length));
+        currentDoc.replaceRange(selectedText.toUpperCase(), pos.start, pos.end);
     }
     /*
         Function to lowercase text
@@ -134,9 +134,9 @@ define(function (require, exports, module) {
             selectedText = editor.getSelectedText(),
             pos = editor.getCursorPos(),
             currentDoc = DocumentManager.getCurrentDocument();
-        currentDoc.replaceRange(selectedText.toLowerCase(), pos, (pos.ch += selectedText.length));
+        currentDoc.replaceRange(selectedText.toLowerCase(), pos.start, pos.end);
     }
-    
+
     /*
         Register command for menu action
     */
@@ -147,7 +147,7 @@ define(function (require, exports, module) {
     CommandManager.register(RIGHT_CLICK_MENU_LOWERCASE_NAME, RIGHT_CLICK_MENU_LOWERCASE_COMMAND_ID, lowercase);
     CommandManager.register(RIGHT_CLICK_MENU_SELECTALL_NAME, RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID, selectall);
 
-    
+
     /*
         Register menu
     */
