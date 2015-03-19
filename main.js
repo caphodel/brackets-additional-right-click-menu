@@ -25,7 +25,7 @@ define(function (require, exports, module) {
     RIGHT_CLICK_MENU_UPPERCASE_COMMAND_ID  = "rightclickmenu.uppercase",
     RIGHT_CLICK_MENU_LOWERCASE_NAME   = "LOWERCASE",
     RIGHT_CLICK_MENU_LOWERCASE_COMMAND_ID  = "rightclickmenu.lowercase",
-    RIGHT_CLICK_MENU_SELECTALL_NAME   = "SELECTALL",
+    RIGHT_CLICK_MENU_SELECTALL_NAME   = "Select all",
     RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID  = "rightclickmenu.selectall";
 
     $('#editor-holder').mousedown(function(event) {
@@ -122,8 +122,9 @@ define(function (require, exports, module) {
     function uppercase() {
         var editor = EditorManager.getCurrentFullEditor(),
             selectedText = editor.getSelectedText(),
-            pos = editor.getCursorPos();
-        DocumentManager.replaceRange(selectedText.toUpperCase(), pos);
+            pos = editor.getCursorPos(),
+            currentDoc = DocumentManager.getCurrentDocument();
+        currentDoc.replaceRange(selectedText.toUpperCase(), pos);
     }
     /*
         Function to lowercase text
@@ -131,8 +132,9 @@ define(function (require, exports, module) {
     function lowercase() {
         var editor = EditorManager.getCurrentFullEditor(),
             selectedText = editor.getSelectedText(),
-            pos = editor.getCursorPos();
-        DocumentManager.replaceRange(selectedText.toLowerCase(), pos);
+            pos = editor.getCursorPos(),
+            currentDoc = DocumentManager.getCurrentDocument();
+        currentDoc.replaceRange(selectedText.toLowerCase(), pos);
     }
     
     /*
