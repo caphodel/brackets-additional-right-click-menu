@@ -124,7 +124,7 @@ define(function (require, exports, module) {
             selectedText = editor.getSelectedText(),
             pos = editor.getCursorPos(),
             currentDoc = DocumentManager.getCurrentDocument();
-        currentDoc.replaceRange(selectedText.toUpperCase(), pos);
+        currentDoc.replaceRange(selectedText.toUpperCase(), pos, (pos.ch += selectedText.length));
     }
     /*
         Function to lowercase text
@@ -134,7 +134,7 @@ define(function (require, exports, module) {
             selectedText = editor.getSelectedText(),
             pos = editor.getCursorPos(),
             currentDoc = DocumentManager.getCurrentDocument();
-        currentDoc.replaceRange(selectedText.toLowerCase(), pos);
+        currentDoc.replaceRange(selectedText.toLowerCase(), pos, (pos.ch += selectedText.length));
     }
     
     /*
