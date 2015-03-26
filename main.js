@@ -10,8 +10,7 @@ define(function (require, exports, module) {
         Menus          = brackets.getModule("command/Menus"),
         EditorManager = brackets.getModule("editor/EditorManager"),
         DocumentManager = brackets.getModule("document/DocumentManager"),
-        Commands = brackets.getModule("command/Commands"),
-        KeyBindingManager = brackets.getModule("command/KeyBindingManager");
+        Commands = brackets.getModule("command/Commands");
 
 
     /*
@@ -114,7 +113,10 @@ define(function (require, exports, module) {
         Function to copy text
     */
     function copyToClipboard() {
-        document.execCommand("copy", false, null); 
+        var editor = EditorManager.getCurrentFullEditor(),
+        selectedText = editor.getSelectedText();
+        if(selectedText.length === 0)
+            document.execCommand("copy", false, null);
     }
     /* 
         Function to paste text
@@ -126,7 +128,10 @@ define(function (require, exports, module) {
         Function to cut text
     */
     function cutToClipboard() {
-        document.execCommand('cut');
+        var editor = EditorManager.getCurrentFullEditor(),
+            selectedText = editor.getSelectedText();
+        if(selectedText.length === 0)
+            document.execCommand('cut');
     }
     /*
         Function to cut text
@@ -152,7 +157,8 @@ define(function (require, exports, module) {
             selectedText = editor.getSelectedText(),
             pos = editor.getSelection(),
             currentDoc = DocumentManager.getCurrentDocument();
-        currentDoc.replaceRange(selectedText.toLowerCase(), pos.start, pos.end);
+        if(selectedText.length === 0)
+            currentDoc.replaceRange(selectedText.toLowerCase(), pos.start, pos.end);
     }
 
     function camelcase(){
@@ -163,7 +169,8 @@ define(function (require, exports, module) {
             }),
             pos = editor.getSelection(),
             currentDoc = DocumentManager.getCurrentDocument();
-        currentDoc.replaceRange(selectedText, pos.start, pos.end);
+        if(selectedText.length === 0)
+            currentDoc.replaceRange(selectedText, pos.start, pos.end);
     }
 
     function blockComment(){
