@@ -10,7 +10,10 @@ define(function (require, exports, module) {
         Menus          = brackets.getModule("command/Menus"),
         EditorManager = brackets.getModule("editor/EditorManager"),
         DocumentManager = brackets.getModule("document/DocumentManager"),
-        Commands = brackets.getModule("command/Commands");
+        Commands = brackets.getModule("command/Commands"),
+        ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
+        NodeDomain = brackets.getModule("utils/NodeDomain"),
+        ProjectManager = brackets.getModule("project/ProjectManager");
 
 
     /*
@@ -33,7 +36,13 @@ define(function (require, exports, module) {
         RIGHT_CLICK_MENU_BLOCKCOMMENT_NAME   = "Toggle Block Comment",
         RIGHT_CLICK_MENU_BLOCKCOMMENT_COMMAND_ID  = "rightclickmenu.blockComment",
         RIGHT_CLICK_MENU_LINECOMMENT_NAME   = "Toggle Line Comment",
-        RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID  = "rightclickmenu.lineComment";
+        RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID  = "rightclickmenu.lineComment";/*,
+        RIGHT_CLICK_MENU_COPYFILE_NAME   = "Copy",
+        RIGHT_CLICK_MENU_COPYFILE_COMMAND_ID  = "rightclickmenu.copyFile",
+        RIGHT_CLICK_MENU_PASTEFILE_NAME   = "Paste",
+        RIGHT_CLICK_MENU_PASTEFILE_COMMAND_ID  = "rightclickmenu.pasteFile";*/
+
+    var setCursorPos = false, initialPos = {};
 
     $('#editor-holder').mousedown(function(event) {
         var el = $(event.target);
@@ -51,7 +60,10 @@ define(function (require, exports, module) {
                     var editor = EditorManager.getCurrentFullEditor(),
                         selectedText = editor.getSelectedText(),
                         li;
+
+                    initialPos = editor.getCursorPos();
                     if(selectedText.length === 0){
+                        setCursorPos = true;
                         li = $('#editor-context-menu-rightclickmenu\\.copy').parent();
                         li.hide();
                         if($('#editor-context-menu-rightclickmenu\\.copy\\.disabled').length===0){
@@ -83,6 +95,7 @@ define(function (require, exports, module) {
                         }
                     }
                     else{
+                        setCursorPos = false;
                         li = $('#editor-context-menu-rightclickmenu\\.copy').parent();
                         li.show();
                         $('#editor-context-menu-rightclickmenu\\.copy\\.disabled').remove();
@@ -113,25 +126,22 @@ define(function (require, exports, module) {
         Function to copy text
     */
     function copyToClipboard() {
-        var editor = EditorManager.getCurrentFullEditor(),
-        selectedText = editor.getSelectedText();
-        if(selectedText.length === 0)
-            document.execCommand("copy", false, null);
+        document.execCommand("copy", false, null);
     }
     /* 
         Function to paste text
     */
     function pasteToEditor() {
+        var editor = EditorManager.getCurrentFullEditor();
+        if(setCursorPos)
+            editor.setCursorPos(initialPos.line, initialPos.ch);
         document.execCommand('paste');
     }
     /* 
         Function to cut text
     */
     function cutToClipboard() {
-        var editor = EditorManager.getCurrentFullEditor(),
-            selectedText = editor.getSelectedText();
-        if(selectedText.length === 0)
-            document.execCommand('cut');
+        document.execCommand('cut');
     }
     /*
         Function to cut text
@@ -157,8 +167,7 @@ define(function (require, exports, module) {
             selectedText = editor.getSelectedText(),
             pos = editor.getSelection(),
             currentDoc = DocumentManager.getCurrentDocument();
-        if(selectedText.length === 0)
-            currentDoc.replaceRange(selectedText.toLowerCase(), pos.start, pos.end);
+        currentDoc.replaceRange(selectedText.toLowerCase(), pos.start, pos.end);
     }
 
     function camelcase(){
@@ -169,8 +178,7 @@ define(function (require, exports, module) {
             }),
             pos = editor.getSelection(),
             currentDoc = DocumentManager.getCurrentDocument();
-        if(selectedText.length === 0)
-            currentDoc.replaceRange(selectedText, pos.start, pos.end);
+        currentDoc.replaceRange(selectedText, pos.start, pos.end);
     }
 
     function blockComment(){
@@ -179,6 +187,32 @@ define(function (require, exports, module) {
 
     function lineComment(){
         CommandManager.execute(Commands.EDIT_LINE_COMMENT);
+    }
+
+    function copyFile(){
+        var selectedFile = ProjectManager.getSelectedItem(),
+            path = selectedFile.fullPath,
+            copyPaste = new NodeDomain("copyPaste", ExtensionUtils.getModulePath(module, "node/copyPasteModule"));
+
+        copyPaste.exec('copyText', path);
+
+    }
+
+    function pasteFile(){
+        var selectedFile = ProjectManager.getSelectedItem(),
+            destPath = selectedFile.isDirectory ? selectedFile.fullPath : selectedFile.parentPath,
+            copyPaste = new NodeDomain("copyPaste", ExtensionUtils.getModulePath(module, "node/copyPasteModule"));
+
+        copyPaste.exec('getCopyText', destPath, function(path, destPath){
+            brackets.fs.readFile(path, 'utf8', function(err, content){
+                if(err != 0){
+                }
+                else{
+                    brackets.fs.copyFile(path, destPath);
+                }
+            });
+        });
+
     }
 
     /*
@@ -193,6 +227,8 @@ define(function (require, exports, module) {
     CommandManager.register(RIGHT_CLICK_MENU_SELECTALL_NAME, RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID, selectall);
     CommandManager.register(RIGHT_CLICK_MENU_BLOCKCOMMENT_NAME, RIGHT_CLICK_MENU_BLOCKCOMMENT_COMMAND_ID, blockComment);
     CommandManager.register(RIGHT_CLICK_MENU_LINECOMMENT_NAME, RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID, lineComment);
+    //CommandManager.register(RIGHT_CLICK_MENU_COPYFILE_NAME, RIGHT_CLICK_MENU_COPYFILE_COMMAND_ID, copyFile);
+    //CommandManager.register(RIGHT_CLICK_MENU_PASTEFILE_NAME, RIGHT_CLICK_MENU_PASTEFILE_COMMAND_ID, pasteFile);
 
 
     /*
@@ -210,6 +246,8 @@ define(function (require, exports, module) {
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuDivider();
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_BLOCKCOMMENT_COMMAND_ID);
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID);
+    //Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU).addMenuItem(RIGHT_CLICK_MENU_COPYFILE_COMMAND_ID);
+    //Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU).addMenuItem(RIGHT_CLICK_MENU_PASTEFILE_COMMAND_ID);
 
     /*
         Register keybinding

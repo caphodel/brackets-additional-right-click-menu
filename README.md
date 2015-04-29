@@ -9,3 +9,4 @@ Now support select all, Camel Case, UPPERCASE and lowercase and some functionali
 
 #Changelog
 added a shortcuts to some menu items
+Fixed some bugs with brackets 1.3 paste
