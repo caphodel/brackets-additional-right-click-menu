@@ -3,7 +3,7 @@
     "title": "Brackets Additional Right Click Menu",
     "description": "A Brackets extension that add additional functionality to Brackets editor right menu, like cut, copy, paste, select all, Camel Case, UPPERCASE, lowercase and some functionality from edit menu. Works on windows 7 too!!! And added a shortcuts to some menu items. changelog: bug fix for paste in Brackets 1.3",
     "homepage": "https://github.com/caphodel/brackets-additional-right-click-menu",
-    "version": "0.4.1",
+    "version": "0.5.0",
     "author": "Deddy Lasmono Putro <caphodel@gmail.com>",
     "license": "MIT",
     "engines": {

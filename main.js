@@ -36,7 +36,9 @@ define(function (require, exports, module) {
         RIGHT_CLICK_MENU_BLOCKCOMMENT_NAME   = "Toggle Block Comment",
         RIGHT_CLICK_MENU_BLOCKCOMMENT_COMMAND_ID  = "rightclickmenu.blockComment",
         RIGHT_CLICK_MENU_LINECOMMENT_NAME   = "Toggle Line Comment",
-        RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID  = "rightclickmenu.lineComment";/*,
+        RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID  = "rightclickmenu.lineComment",
+        RIGHT_CLICK_MENU_INDENT_NAME   = "Fix Indent Line/s",
+        RIGHT_CLICK_MENU_INDENT_COMMAND_ID  = "rightclickmenu.indentLine";/*,
         RIGHT_CLICK_MENU_COPYFILE_NAME   = "Copy",
         RIGHT_CLICK_MENU_COPYFILE_COMMAND_ID  = "rightclickmenu.copyFile",
         RIGHT_CLICK_MENU_PASTEFILE_NAME   = "Paste",
@@ -198,6 +200,19 @@ define(function (require, exports, module) {
 
     }
 
+    /*function to reindent lines *shamelessly taken from ahuth brackets-paste-and-indent code*/
+
+    function reindentLines() {
+        var editor = EditorManager.getCurrentFullEditor(),
+            selection = editor.getSelection(), codeMirror = editor._codeMirror;
+
+        codeMirror.operation(function () {
+            codeMirror.eachLine(selection.start.line, selection.end.line, function (lineHandle) {
+                codeMirror.indentLine(lineHandle.lineNo(), "smart");
+            });
+        });
+    }
+
     function pasteFile(){
         var selectedFile = ProjectManager.getSelectedItem(),
             destPath = selectedFile.isDirectory ? selectedFile.fullPath : selectedFile.parentPath,
@@ -227,6 +242,7 @@ define(function (require, exports, module) {
     CommandManager.register(RIGHT_CLICK_MENU_SELECTALL_NAME, RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID, selectall);
     CommandManager.register(RIGHT_CLICK_MENU_BLOCKCOMMENT_NAME, RIGHT_CLICK_MENU_BLOCKCOMMENT_COMMAND_ID, blockComment);
     CommandManager.register(RIGHT_CLICK_MENU_LINECOMMENT_NAME, RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID, lineComment);
+    CommandManager.register(RIGHT_CLICK_MENU_INDENT_NAME, RIGHT_CLICK_MENU_INDENT_COMMAND_ID, reindentLines);
     //CommandManager.register(RIGHT_CLICK_MENU_COPYFILE_NAME, RIGHT_CLICK_MENU_COPYFILE_COMMAND_ID, copyFile);
     //CommandManager.register(RIGHT_CLICK_MENU_PASTEFILE_NAME, RIGHT_CLICK_MENU_PASTEFILE_COMMAND_ID, pasteFile);
 
@@ -246,6 +262,7 @@ define(function (require, exports, module) {
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuDivider();
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_BLOCKCOMMENT_COMMAND_ID);
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID);
+    Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_INDENT_COMMAND_ID);
     //Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU).addMenuItem(RIGHT_CLICK_MENU_COPYFILE_COMMAND_ID);
     //Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU).addMenuItem(RIGHT_CLICK_MENU_PASTEFILE_COMMAND_ID);
 

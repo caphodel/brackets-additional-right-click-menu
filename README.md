@@ -1,7 +1,7 @@
 Brackets Additional Right Click Menu
 ================
 
-A Brackets extension that add additional functionality to Brackets editor, like cut, copy, paste.
+A Brackets extension that add additional functionality to Brackets editor, like cut, copy, paste, fix indentation.
 
 Works on windows 7!!! :)
 
