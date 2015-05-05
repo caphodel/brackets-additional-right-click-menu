@@ -160,6 +160,8 @@ define(function (require, exports, module) {
             pos = editor.getSelection(),
             currentDoc = DocumentManager.getCurrentDocument();
         currentDoc.replaceRange(selectedText.toUpperCase(), pos.start, pos.end);
+
+        editor.setSelection(pos.start, pos.end);
     }
     /*
         Function to lowercase text
@@ -170,6 +172,8 @@ define(function (require, exports, module) {
             pos = editor.getSelection(),
             currentDoc = DocumentManager.getCurrentDocument();
         currentDoc.replaceRange(selectedText.toLowerCase(), pos.start, pos.end);
+
+        editor.setSelection(pos.start, pos.end);
     }
 
     function camelcase(){
@@ -181,6 +185,8 @@ define(function (require, exports, module) {
             pos = editor.getSelection(),
             currentDoc = DocumentManager.getCurrentDocument();
         currentDoc.replaceRange(selectedText, pos.start, pos.end);
+
+        editor.setSelection(pos.start, pos.end);
     }
 
     function blockComment(){
@@ -257,8 +263,8 @@ define(function (require, exports, module) {
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_SELECTALL_COMMAND_ID);
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuDivider();
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_CAMELCASE_COMMAND_ID);
-    Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_UPPERCASE_COMMAND_ID, 'Ctrl-U');
-    Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_LOWERCASE_COMMAND_ID, 'Ctrl-L');
+    Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_UPPERCASE_COMMAND_ID, 'Ctrl-Shift-U');
+    Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_LOWERCASE_COMMAND_ID, 'Ctrl-Shift-L');
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuDivider();
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_BLOCKCOMMENT_COMMAND_ID);
     Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).addMenuItem(RIGHT_CLICK_MENU_LINECOMMENT_COMMAND_ID);
